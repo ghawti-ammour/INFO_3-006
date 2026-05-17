@@ -10,15 +10,16 @@
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
     "start": "tsx server.ts",
-    "vercel-build": "vite build"
+    "vercel-build": "vite build",
+    "railway-build": "npm run build"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
+    "@neondatabase/serverless": "^1.1.0",
     "@tailwindcss/vite": "^4.1.14",
     "@types/jsonwebtoken": "^9.0.10",
     "@vitejs/plugin-react": "^5.0.4",
     "bcrypt": "^6.0.0",
-    "better-sqlite3": "^12.4.1",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.3",
