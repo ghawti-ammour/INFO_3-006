@@ -1,38 +1,48 @@
-# S.A.C.H - Système d'Affectation et de charge des Heures
+# S.A.C.H - Système d'Affectation et de Charge des Heures
 
-Version 1.1 - Teacher Management System
+A comprehensive academic workload management system for universities. This project is a PFE (Projet de Fin d'Études) for L3 Informatique at Université Oran 1.
 
 ## Overview
 
-S.A.C.H is a comprehensive teacher management system designed to handle academic workload assignments, teacher profiles, course modules, and overtime requests. Built with React, TypeScript, Express, and SQLite.
+S.A.C.H is a full-stack web application designed to streamline the management of teacher workloads, course assignments, and academic programs. It provides administrators with tools to manage teachers, academic programs (Parcours), course modules, and assignments, while enabling teachers to track their workload and request overtime approvals.
 
 ## Features
 
-- **Authentication System**: JWT-based secure authentication for admins and teachers
-- **Teacher Management**: Full CRUD operations for teacher profiles with photo support
-- **Academic Structure**: Manage Parcours (academic programs) and Modules
-- **Workload Tracking**: Track CM (Lectures), TD (Tutorials), and TP (Practicals) hours
-- **Assignment System**: Assign teachers to specific modules with hour allocations
-- **Overtime Requests**: Message-based system for teachers to request overtime approval
-- **Secure Photo Handling**: Secure upload and storage of profile photos
-- **Real-time Statistics**: Calculate teacher workloads and compare with required hours
+### Core Functionality
+- **Authentication System**: JWT-based secure authentication with role-based access control (Admin/Teacher)
+- **Teacher Management**: Complete CRUD operations for teacher profiles including grades, specialties, status, and required hours
+- **Academic Structure Management**: 
+  - Parcours (academic programs) with type, level, year, and specialty
+  - Modules with CM (Lectures), TD (Tutorials), and TP (Practicals) hour allocations
+- **Assignment System**: Assign teachers to specific modules with precise hour allocations by type
+- **Workload Tracking**: Real-time calculation of teacher workloads with progress indicators
+- **Overtime Request System**: Message-based workflow for teachers to request and receive approval for additional hours
+- **Profile Management**: Admin and teacher profile management with photo upload support
+
+### User Experience
+- **Multi-language Support**: English, French, and Arabic translations with RTL support
+- **Dark Mode**: Toggle between light and dark themes
+- **Responsive Design**: Mobile-friendly interface with sidebar navigation
+- **Animated UI**: Smooth animations and transitions using Motion library
+- **Real-time Updates**: Live workload calculations and statistics
 
 ## Tech Stack
 
 ### Frontend
-- **React 19** - UI framework
-- **TypeScript** - Type safety
-- **Vite** - Build tool and dev server
-- **TailwindCSS** - Styling
-- **Lucide React** - Icons
-- **Motion** - Animations
+- **React 19** - UI framework with hooks and concurrent features
+- **TypeScript** - Type safety and enhanced developer experience
+- **Vite 6** - Fast build tool and development server
+- **TailwindCSS 4** - Utility-first CSS framework with dark mode support
+- **Lucide React** - Beautiful, consistent icon set
+- **Motion (Framer Motion)** - Production-ready animations
+- **uuid** - Unique identifier generation
 
 ### Backend
-- **Express.js** - Web server
-- **better-sqlite3** - Database
-- **JWT** - Authentication
-- **bcrypt** - Password hashing
-- **multer** - File uploads
+- **Express.js 4** - Web server framework
+- **better-sqlite3** - Synchronous SQLite database with full transaction support
+- **jsonwebtoken** - JWT token generation and validation
+- **bcrypt** - Secure password hashing
+- **uuid** - Unique ID generation for database records
 
 ## Prerequisites
 
@@ -49,20 +59,22 @@ npm install
 
 3. Set up environment variables (optional):
 ```bash
-# Create a .env file (currently JWT_SECRET is hardcoded in server.ts)
-# JWT_SECRET=your-secret-key-here
+# Create a .env file
+JWT_SECRET=sach-secret-key-2024-pfe-excellence
 ```
 
 ## Database
 
-The application uses SQLite with the following tables:
-- `admin_profile` - Administrator accounts
-- `teachers` - Teacher profiles
-- `approved_overtime` - Approved overtime requests
-- `parcours` - Academic programs
-- `modules` - Course modules
-- `assignments` - Teacher-module assignments
-- `messages` - Overtime request messages
+The application uses SQLite (better-sqlite3) with the following tables:
+- `admin_profile` - Administrator accounts with role-based access
+- `teachers` - Teacher profiles with grades, specialties, and workload requirements
+- `approved_overtime` - Tracks approved overtime module assignments per teacher
+- `parcours` - Academic programs (L1, L2, L3, M1, M2) with types and specialties
+- `modules` - Course modules with CM, TD, TP hour allocations
+- `assignments` - Teacher-to-module assignments with specific hour types
+- `messages` - Overtime request messages with approval workflow
+
+The database is automatically initialized on first run with foreign key constraints enabled.
 
 ## Default Credentials
 
@@ -78,16 +90,11 @@ The application uses SQLite with the following tables:
 ```bash
 npm run dev
 ```
-The server will start on `http://localhost:3000`
+The development server will start on `http://localhost:5173` (Vite default)
 
 ### Production Build
 ```bash
 npm run build
-```
-
-### Production Server
-```bash
-npm run start
 ```
 
 ### Preview Production Build
@@ -95,24 +102,34 @@ npm run start
 npm run preview
 ```
 
+### Type Checking
+```bash
+npm run lint
+```
+
 ## Project Structure
 
 ```
-S.A.C.H version 1/
+PFE-INFO/
+├── api/
+│   └── server.js            # Express API server (Vercel serverless function)
+├── public/
+│   └── assets/
+│       └── logo-sach.png    # Application logo
 ├── src/
-│   ├── App.tsx              # Main React application
+│   ├── App.tsx              # Main React application component
 │   ├── main.tsx             # Application entry point
-│   ├── index.css            # Global styles
+│   ├── index.css            # Global styles and Tailwind directives
 │   ├── types.ts             # TypeScript type definitions
-│   ├── translations.ts      # Internationalization
-│   └── mockData.ts          # Mock data for testing
-├── server.ts                # Main Express server
-├── api-server.js            # Vercel serverless function
-├── database.db              # SQLite database
+│   ├── translations.ts      # Internationalization (EN/FR/AR)
+│   └── mockData.ts          # Mock data for development
+├── index.html               # HTML entry point
 ├── package.json             # Dependencies and scripts
-├── vite.config.ts           # Vite configuration
+├── vite.config.ts           # Vite build configuration
 ├── tsconfig.json            # TypeScript configuration
-└── vercel.json              # Vercel deployment config
+├── vercel.json              # Vercel deployment configuration
+├── .env.example             # Environment variables template
+└── .gitignore               # Git ignore rules
 ```
 
 ## API Endpoints
@@ -171,19 +188,24 @@ S.A.C.H version 1/
 
 ## Deployment
 
-### Vercel
-The project includes `vercel.json` for deployment. The `api-server.js` file is configured as a serverless function.
+### Vercel (Recommended)
+The project is configured for Vercel deployment with:
+- `vercel.json` configuration for serverless functions
+- `api/server.js` as the API endpoint
+- Automatic build with `vercel-build` script
 
 To deploy:
-1. Push to GitHub
-2. Import project in Vercel
-3. Deploy
+1. Push your code to GitHub
+2. Import the project in Vercel dashboard
+3. Vercel will automatically detect the configuration and deploy
+4. The API will be available at `/api/*` endpoints
+
+### Environment Variables on Vercel
+Set the following in your Vercel project settings:
+- `JWT_SECRET` - Your secret key for JWT token generation
 
 ### Manual Deployment
-```bash
-npm run build
-npm run start
-```
+For manual deployment, build the project and serve the `dist` folder with any static file server.
 
 ## Security Features
 
@@ -195,10 +217,13 @@ npm run start
 
 ## Development Notes
 
-- The database file (`database.db`) is created automatically
-- Foreign key constraints are enabled
-- Database migrations are handled automatically
-- In development, Vite provides hot module replacement
+- The SQLite database is created automatically in `/tmp` on Vercel or locally
+- Foreign key constraints are enabled for data integrity
+- Database schema is initialized automatically on server start
+- Vite provides hot module replacement during development
+- The API uses prepared statements to prevent SQL injection
+- JWT tokens expire after 24 hours
+- Default admin account is created automatically if it doesn't exist
 
 ## License
 
