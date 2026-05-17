@@ -396,4 +396,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-export default app;
+// Vercel serverless function export
+export default function handler(req, res) {
+  app(req, res);
+}

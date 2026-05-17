@@ -344,7 +344,7 @@ function AppContent() {
   const [selectedSemester, setSelectedSemester] = useState<number | null>(null);
   const [selectedParcoursType, setSelectedParcoursType] = useState<ParcoursType | null>(null);
   const [selectedLMDLevel, setSelectedLMDLevel] = useState<LMDLevel | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);        
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('theme');
     return saved ? saved === 'dark' : true;
